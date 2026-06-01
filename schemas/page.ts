@@ -20,11 +20,19 @@ const heroSection = {
   fields: [
     defineField({ name: 'title', title: 'Headline', type: 'string' }),
     defineField({ name: 'subtitle', title: 'Subtitle', type: 'text' }),
-    defineField({ name: 'image', title: 'Background Image', description: 'Optional — gradient is used if empty', type: 'image', options: { hotspot: true } }),
+    defineField({
+      name: 'compact',
+      title: 'Render as compact title bar',
+      description: 'Short title bar with gradient background (no image, no CTA). Use for inner-page heroes. Uncheck for landing-page heroes with full height, image, and CTA.',
+      type: 'boolean',
+      initialValue: true,
+    }),
+    defineField({ name: 'image', title: 'Background Image', description: 'Optional — gradient is used if empty. Ignored in compact mode.', type: 'image', options: { hotspot: true } }),
     defineField({ name: 'imageAlt', title: 'Background image alt text', description: 'Describe the background image for screen readers', type: 'string' }),
     defineField({
       name: 'cta',
       title: 'CTA Button',
+      description: 'Ignored in compact mode.',
       type: 'object',
       fields: [
         defineField({ name: 'label', title: 'Button Text', type: 'string' }),
@@ -46,6 +54,13 @@ const featureGrid = {
   title: 'Feature Grid',
   fields: [
     defineField({ name: 'heading', title: 'Section Heading', type: 'string' }),
+    defineField({
+      name: 'anchorId',
+      title: 'Anchor ID',
+      description: 'Optional. Used to deep-link this section (e.g. /plans#medicare). Lowercase, hyphens only.',
+      type: 'string',
+      validation: (Rule) => Rule.regex(/^[a-z0-9-]*$/, { name: 'kebab-case', invert: false }),
+    }),
     defineField({
       name: 'items',
       title: 'Feature Cards',
@@ -317,6 +332,17 @@ const contactSection = {
     defineField({ name: 'responseTime', title: 'Response Time Note', type: 'string' }),
     defineField({ name: 'address', title: 'Physical Address', type: 'text' }),
     defineField({ name: 'hours', title: 'Business Hours', type: 'text' }),
+    defineField({
+      name: 'mapEmbedUrl',
+      title: 'Google Maps Embed URL',
+      description: 'Paste the full src URL from Google Maps → Share → Embed a map. Leave blank to hide the map.',
+      type: 'url',
+      validation: (Rule) =>
+        Rule.uri({ scheme: ['https'] }).custom((value?: string) => {
+          if (!value) return true;
+          return value.includes('google.com/maps') || 'Must be a Google Maps URL';
+        }),
+    }),
   ],
   preview: {
     prepare() {
@@ -353,6 +379,42 @@ const portfolioSection = {
     select: { heading: 'heading' },
     prepare({ heading }: { heading?: string }) {
       return { title: heading || 'Portfolio', subtitle: 'Portfolio' };
+    },
+  },
+};
+
+const partnerLogos = {
+  type: 'object',
+  name: 'partnerLogos',
+  title: 'Partner Logos',
+  fields: [
+    defineField({ name: 'heading', title: 'Section Heading', type: 'string' }),
+    defineField({ name: 'subheading', title: 'Section Subheading', type: 'string' }),
+    defineField({
+      name: 'logos',
+      title: 'Logos',
+      type: 'array',
+      of: [{
+        type: 'object',
+        name: 'partnerLogo',
+        fields: [
+          defineField({ name: 'name', title: 'Partner Name', description: 'Used for alt text and tooltip', type: 'string', validation: (Rule) => Rule.required() }),
+          defineField({ name: 'image', title: 'Logo', type: 'image', options: { hotspot: true } }),
+          defineField({ name: 'url', title: 'Optional Link', description: 'External URL — leave blank if the logo should not be clickable', type: 'url' }),
+        ],
+        preview: {
+          select: { title: 'name', media: 'image' },
+        },
+      }],
+    }),
+  ],
+  preview: {
+    select: { heading: 'heading', logoCount: 'logos' },
+    prepare({ heading, logoCount }: { heading?: string; logoCount?: unknown[] }) {
+      return {
+        title: heading || 'Partner Logos',
+        subtitle: `${logoCount?.length || 0} logo(s)`,
+      };
     },
   },
 };
@@ -414,6 +476,7 @@ export default defineType({
         textContent,
         portfolioSection,
         teamProjectsSection,
+        partnerLogos,
       ],
     }),
   ],

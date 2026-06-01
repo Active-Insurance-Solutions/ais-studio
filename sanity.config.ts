@@ -3,8 +3,11 @@ import { structureTool } from 'sanity/structure';
 import { iconPicker } from 'sanity-plugin-icon-picker';
 import { schemaTypes } from './schemas';
 
-// Types where clients can only edit existing documents, not create or delete
-const LOCKED_TYPES = ['page', 'legalPage', 'siteSettings', 'socialLinks', 'navigation'];
+// Types where clients can only edit existing documents, not create or delete.
+// Each of these is a singleton (or a fixed small set, like the 3 navigation
+// docs) seeded once and edited afterward. Removed `socialLinks` — that schema
+// no longer exists.
+const LOCKED_TYPES = ['page', 'legalPage', 'siteSettings', 'navigation', 'utilityBar', 'footerColumns'];
 
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID!;
 
