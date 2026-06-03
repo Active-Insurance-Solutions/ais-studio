@@ -536,14 +536,6 @@ const documents: Array<Record<string, unknown>> = [
     lastUpdated: '2026-05-20',
     body: mdToPortableText(legalMd('accessibility')),
   },
-  {
-    _type: 'legalPage',
-    _id: 'legal-cookie-policy',
-    title: 'Cookie Policy',
-    slug: { _type: 'slug', current: 'cookie-policy' },
-    lastUpdated: '2026-06-03',
-    body: mdToPortableText(legalMd('cookie-policy')),
-  },
 
   // ─── Navigation ──────────────────────────────────────────────────────────
   // Three nav documents, one per location. SiteLayout watches all three and
@@ -581,7 +573,6 @@ const documents: Array<Record<string, unknown>> = [
       { _key: 'privacy',       label: 'Privacy Policy',          url: '/privacy-policy' },
       { _key: 'terms',         label: 'Terms & Conditions',      url: '/terms-and-conditions' },
       { _key: 'accessibility', label: 'Accessibility Statement', url: '/accessibility' },
-      { _key: 'cookies',       label: 'Cookie Policy',           url: '/cookie-policy' },
     ],
   },
 
@@ -631,7 +622,6 @@ const documents: Array<Record<string, unknown>> = [
           { _key: 'privacy',       label: 'Privacy Policy',          url: '/privacy-policy' },
           { _key: 'terms',         label: 'Terms & Conditions',      url: '/terms-and-conditions' },
           { _key: 'accessibility', label: 'Accessibility Statement', url: '/accessibility' },
-          { _key: 'cookies',       label: 'Cookie Policy',           url: '/cookie-policy' },
         ],
       },
     ],

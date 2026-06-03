@@ -45,19 +45,17 @@ We may also collect information that Your browser sends whenever You visit our S
 
 #### Tracking Technologies and Cookies
 
-We use Cookies and similar tracking technologies to track the activity on Our Service and store certain information. Tracking technologies used are beacons, tags, and scripts to collect and track information and to improve and analyze Our Service. The technologies We use may include:
+This website does not use cookies to track, identify, or profile visitors. We've built this site to be privacy-first, and there is no consent banner because there is nothing for You to consent to.
 
-- Cookies or Browser Cookies. A cookie is a small file placed on Your Device. You can instruct Your browser to refuse all Cookies or to indicate when a Cookie is being sent. However, if You do not accept Cookies, You may not be able to use some parts of our Service. Unless you have adjusted Your browser setting so that it will refuse Cookies, our Service may use Cookies.
-- Flash Cookies. Certain features of our Service may use local stored objects (or Flash Cookies) to collect and store information about Your preferences or Your activity on our Service. Flash Cookies are not managed by the same browser settings as those used for Browser Cookies.
-- Web Beacons. Certain sections of our Service and our emails may contain small electronic files known as web beacons (also referred to as clear gifs, pixel tags, and single-pixel gifs) that permit the Company, for example, to count users who have visited those pages or opened an email and for other related website statistics (for example, recording the popularity of a certain section and verifying system and server integrity).
+**Analytics.** We use Simple Analytics to understand which pages are popular and what referrers send Us traffic. Simple Analytics does not set cookies, does not collect personal data, does not perform cross-site tracking, and does not fingerprint Your device. It is GDPR-, CCPA-, and PECR-compliant by design. You can learn more at [simpleanalytics.com/privacy](https://www.simpleanalytics.com/privacy).
 
-Cookies can be "Persistent" or "Session" Cookies. Persistent Cookies remain on Your personal computer or mobile device when You go offline, while Session Cookies are deleted as soon as You close Your web browser.
+**Browser storage.** The site may briefly use Your browser's built-in local storage to remember small interface preferences such as light or dark mode. This data lives entirely on Your device, is never transmitted to Us, and can be cleared at any time through Your browser's storage settings.
 
-We use both Session and Persistent Cookies for the purposes set out below:
+**Third-party embeds.** Our Contact page includes a Google Maps embed. Google may set its own cookies when the map loads — We do not control them and do not receive any data from them. If You prefer to avoid them, You can skip the Contact page and reach Us by phone or email, or use a browser that blocks third-party cookies. For details, see Google's privacy notice at [policies.google.com/privacy](https://policies.google.com/privacy).
 
-- Necessary / Essential Cookies (Session, administered by Us): essential to provide You with services available through the Website and to enable You to use some of its features. They help to authenticate users and prevent fraudulent use of user accounts.
-- Cookies Policy / Notice Acceptance Cookies (Persistent, administered by Us): identify if users have accepted the use of cookies on the Website.
-- Functionality Cookies (Persistent, administered by Us): allow us to remember choices You make when You use the Website, such as remembering your login details or language preference.
+**Server logs.** Like any website on the public internet, Our hosting provider keeps short-term server logs that include the IP address of devices that connect to Our servers. These logs are used only to diagnose technical problems and protect the site from abuse — they are not used to identify individual visitors or build a profile of anyone's browsing.
+
+If We ever introduce cookies or any other form of tracking in the future, We will update this section before doing so and, where required by law, will ask for Your consent first.
 
 ### Use of Your Personal Data
 
