@@ -19,14 +19,108 @@ if (client.config().dataset === 'production') {
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
 let blockKeySeed = 0;
+
+interface Span {
+  _type: 'span';
+  _key: string;
+  text: string;
+  marks: string[];
+}
+
+interface LinkDef {
+  _key: string;
+  _type: 'link';
+  href: string;
+}
+
+/* Parse inline markdown inside a block of text into PortableText spans +
+ * markDefs. Handles:
+ *   **bold text**   → span with marks: ['strong']
+ *   [text](url)     → span with marks: ['<linkKey>'] + a markDefs entry of
+ *                     type 'link' pointing at the URL
+ *
+ * Unmatched `**` or `[` is treated as literal text so prose with rogue
+ * asterisks or brackets doesn't get mangled. Nested formatting (e.g.
+ * **[link](url)**) collapses to the outer mark only — the link inside a
+ * bold span is left as literal text. Add a recursive pass to parseInlineMd
+ * if a future legal page actually needs nesting; not worth the complexity
+ * for the current content. */
+function parseInlineMd(text: string, blockKey: string): { children: Span[]; markDefs: LinkDef[] } {
+  const children: Span[] = [];
+  const markDefs: LinkDef[] = [];
+  let buffer = '';
+  let spanCount = 0;
+  let linkCount = 0;
+
+  const flush = (marks: string[] = []) => {
+    if (!buffer) return;
+    children.push({
+      _type: 'span',
+      _key: `${blockKey}s${spanCount++}`,
+      text: buffer,
+      marks,
+    });
+    buffer = '';
+  };
+
+  let i = 0;
+  while (i < text.length) {
+    // **bold**
+    if (text[i] === '*' && text[i + 1] === '*') {
+      const close = text.indexOf('**', i + 2);
+      if (close !== -1) {
+        flush();
+        buffer = text.slice(i + 2, close);
+        flush(['strong']);
+        i = close + 2;
+        continue;
+      }
+    }
+    // [text](url) — both delimiters must be present and non-empty
+    if (text[i] === '[') {
+      const closeBracket = text.indexOf(']', i + 1);
+      if (closeBracket !== -1 && text[closeBracket + 1] === '(') {
+        const closeParen = text.indexOf(')', closeBracket + 2);
+        if (closeParen !== -1) {
+          flush();
+          buffer = text.slice(i + 1, closeBracket);
+          const href = text.slice(closeBracket + 2, closeParen);
+          const linkKey = `${blockKey}l${linkCount++}`;
+          markDefs.push({ _key: linkKey, _type: 'link', href });
+          flush([linkKey]);
+          i = closeParen + 1;
+          continue;
+        }
+      }
+    }
+    buffer += text[i++];
+  }
+  flush();
+
+  // PortableText blocks must have at least one child span — emit an empty
+  // one for the (rare) all-formatting-no-text case.
+  if (children.length === 0) {
+    children.push({
+      _type: 'span',
+      _key: `${blockKey}s0`,
+      text: '',
+      marks: [],
+    });
+  }
+
+  return { children, markDefs };
+}
+
 function ptBlock(text: string, opts: { style?: string; listItem?: 'bullet' | 'number'; level?: number } = {}) {
   blockKeySeed += 1;
+  const blockKey = `b${blockKeySeed}`;
+  const { children, markDefs } = parseInlineMd(text, blockKey);
   const block: Record<string, unknown> = {
     _type: 'block',
-    _key: `b${blockKeySeed}`,
+    _key: blockKey,
     style: opts.style || 'normal',
-    markDefs: [],
-    children: [{ _type: 'span', _key: `s${blockKeySeed}`, text, marks: [] }],
+    markDefs,
+    children,
   };
   if (opts.listItem) {
     block.listItem = opts.listItem;

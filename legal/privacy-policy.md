@@ -47,13 +47,13 @@ We may also collect information that Your browser sends whenever You visit our S
 
 This website does not use cookies to track, identify, or profile visitors. We have built this site to be privacy-first, and there is no consent banner because there is nothing for You to consent to.
 
-Analytics — we use Simple Analytics to understand which pages are popular and what referrers send Us traffic. Simple Analytics does not set cookies, does not collect personal data, does not perform cross-site tracking, and does not fingerprint Your device. It is GDPR-, CCPA-, and PECR-compliant by design. You can learn more at simpleanalytics.com/privacy.
+**Analytics.** We use Simple Analytics to understand which pages are popular and what referrers send Us traffic. Simple Analytics does not set cookies, does not collect personal data, does not perform cross-site tracking, and does not fingerprint Your device. It is GDPR-, CCPA-, and PECR-compliant by design. You can learn more at [simpleanalytics.com/privacy](https://www.simpleanalytics.com/privacy).
 
-Browser storage — the site may briefly use Your browser's built-in local storage to remember small interface preferences such as light or dark mode. This data lives entirely on Your device, is never transmitted to Us, and can be cleared at any time through Your browser's storage settings.
+**Browser storage.** The site may briefly use Your browser's built-in local storage to remember small interface preferences such as light or dark mode. This data lives entirely on Your device, is never transmitted to Us, and can be cleared at any time through Your browser's storage settings.
 
-Third-party embeds — Our Contact page includes a Google Maps embed. Google may set its own cookies when the map loads. We do not control them and do not receive any data from them. If You prefer to avoid them, You can skip the Contact page and reach Us by phone or email, or use a browser that blocks third-party cookies. For details, see Google's privacy notice at policies.google.com/privacy.
+**Third-party embeds.** Our Contact page includes a Google Maps embed. Google may set its own cookies when the map loads. We do not control them and do not receive any data from them. If You prefer to avoid them, You can skip the Contact page and reach Us by phone or email, or use a browser that blocks third-party cookies. For details, see Google's privacy notice at [policies.google.com/privacy](https://policies.google.com/privacy).
 
-Server logs — like any website on the public internet, Our hosting provider keeps short-term server logs that include the IP address of devices that connect to Our servers. These logs are used only to diagnose technical problems and protect the site from abuse, and they are not used to identify individual visitors or build a profile of anyone's browsing.
+**Server logs.** Like any website on the public internet, Our hosting provider keeps short-term server logs that include the IP address of devices that connect to Our servers. These logs are used only to diagnose technical problems and protect the site from abuse, and they are not used to identify individual visitors or build a profile of anyone's browsing.
 
 If We ever introduce cookies or any other form of tracking in the future, We will update this section before doing so and, where required by law, will ask for Your consent first.
 
