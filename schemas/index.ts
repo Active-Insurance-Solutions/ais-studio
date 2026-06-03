@@ -3,6 +3,7 @@ import siteSettings from './siteSettings';
 import navigation from './navigation';
 import utilityBar from './utilityBar';
 import footerColumns from './footerColumns';
+import legalPage from './legalPage';
 
 export const schemaTypes = [
   page,
@@ -10,4 +11,5 @@ export const schemaTypes = [
   navigation,
   utilityBar,
   footerColumns,
+  legalPage,
 ];

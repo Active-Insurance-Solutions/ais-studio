@@ -517,7 +517,9 @@ const documents: Array<Record<string, unknown>> = [
     _id: 'legal-privacy-policy',
     title: 'Privacy Policy',
     slug: { _type: 'slug', current: 'privacy-policy' },
-    lastUpdated: '2022-05-17',
+    // Bumped from 2022-05-17 when the Tracking Technologies and Cookies section
+    // was rewritten to accurately reflect the cookieless rebuild.
+    lastUpdated: '2026-06-03',
     body: mdToPortableText(legalMd('privacy-policy')),
   },
   {
