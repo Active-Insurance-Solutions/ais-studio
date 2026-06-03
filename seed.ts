@@ -628,23 +628,90 @@ const documents: Array<Record<string, unknown>> = [
   },
 ];
 
+// Recursive merge: take the seed value as the base, but at any image node
+// (and at any keyed array item that contains images), prefer what's already
+// on the existing doc. Preserves:
+//   - hotspot/crop set via Studio on images the seed only references by asset
+//   - asset-reference swaps (e.g. KCL logo replaced with a tighter crop)
+//   - any image field the client has touched, anywhere in the doc tree
+// Falls through to the seed value when there's no existing counterpart, so a
+// fresh dataset still bootstraps with the seed's images.
+function isImageObject(v: unknown): v is { _type: 'image'; asset?: unknown } {
+  return (
+    typeof v === 'object' &&
+    v !== null &&
+    (v as { _type?: unknown })._type === 'image'
+  );
+}
+
+function mergePreservingImages(seedValue: unknown, existingValue: unknown): unknown {
+  // Both sides are images and existing has an asset → keep existing
+  // (preserves hotspot/crop + any asset swap the client made via Studio).
+  if (isImageObject(seedValue) && isImageObject(existingValue) && existingValue.asset) {
+    return existingValue;
+  }
+  // Keyed arrays — walk pairwise by _key so reorders / inserts on the seed
+  // side still get their images merged from the matching existing entry.
+  if (Array.isArray(seedValue) && Array.isArray(existingValue)) {
+    return seedValue.map((seedItem) => {
+      if (seedItem && typeof seedItem === 'object' && '_key' in seedItem) {
+        const match = (existingValue as Array<Record<string, unknown>>).find(
+          (e) => e && typeof e === 'object' && e._key === (seedItem as Record<string, unknown>)._key,
+        );
+        if (match) return mergePreservingImages(seedItem, match);
+      }
+      return seedItem;
+    });
+  }
+  // Plain objects — recurse on every key the seed defines.
+  if (
+    seedValue &&
+    typeof seedValue === 'object' &&
+    !Array.isArray(seedValue) &&
+    existingValue &&
+    typeof existingValue === 'object' &&
+    !Array.isArray(existingValue)
+  ) {
+    const merged: Record<string, unknown> = {};
+    for (const key of Object.keys(seedValue)) {
+      merged[key] = mergePreservingImages(
+        (seedValue as Record<string, unknown>)[key],
+        (existingValue as Record<string, unknown>)[key],
+      );
+    }
+    return merged;
+  }
+  // Primitive, mismatched shapes, or no existing counterpart → use seed.
+  return seedValue;
+}
+
 // Upsert pattern: createIfNotExists ensures the doc exists, then patch.set()
-// updates ONLY the fields the seed explicitly manages. Fields added via the
-// studio that aren't in the seed (e.g. a darkLogo upload, custom partner URLs)
-// are preserved across re-runs.
+// updates the fields the seed manages — but for image nodes, we first fetch
+// the existing doc and merge in whatever the client has set so re-running
+// the seed never wipes a Studio-edited hotspot or replaced asset.
 //
-// Caveat: arrays the seed manages (sections[] on pages, body[] on legal pages,
-// logos[] on partnerLogos sections) are fully replaced — the seed is authoritative
-// for those structures. If you've added or rearranged sections via the studio,
-// re-running the seed will revert them.
+// Caveat: NON-image fields inside seed-managed arrays (sections[], items[],
+// logos[]) are still authoritative. If you've added/rearranged sections via
+// Studio, re-running the seed will revert that structure.
 async function seed() {
   const dataset = client.config().dataset;
   console.log(`Seeding ${documents.length} document(s) into "${dataset}"...`);
+
+  // Fetch every existing doc up front in parallel so the merge step doesn't
+  // serialize round-trips. getDocument returns null when the doc is absent.
+  const existing = await Promise.all(
+    documents.map((doc) => client.getDocument((doc as { _id: string })._id)),
+  );
+
   const transaction = client.transaction();
-  for (const doc of documents) {
-    const { _id, _type, ...fields } = doc as { _id: string; _type: string };
+  for (let i = 0; i < documents.length; i++) {
+    const doc = documents[i] as Record<string, unknown> & { _id: string; _type: string };
+    const { _id, _type, ...fields } = doc;
     transaction.createIfNotExists({ _id, _type });
-    transaction.patch(_id, (p) => p.set(fields));
+    const merged = existing[i]
+      ? (mergePreservingImages(fields, existing[i]) as Record<string, unknown>)
+      : fields;
+    transaction.patch(_id, (p) => p.set(merged));
   }
   await transaction.commit();
   console.log('Seed complete.');
