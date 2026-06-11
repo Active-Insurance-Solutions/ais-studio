@@ -392,15 +392,16 @@ const documents: Array<Record<string, unknown>> = [
         ],
       },
       // Per client direction 2026-06-11: a single Dental & Vision section
-      // below the 4-category grid, not the 5-item Ancillary supplemental
-      // grid we shipped earlier in the day. Using textContent (heading +
-      // PortableText body) since the content is prose-shaped, not an
-      // icon-card list — TextContent renders the heading centered in a
-      // max-w-3xl container with two paragraphs below.
+      // below the 4-category grid, styled as a visual sibling of the four
+      // service-category icon cards above (centered, smaller bold heading,
+      // muted secondary body). The `centered: true` flag opts TextContent
+      // into its card variant — see TextContent.vue. Default TextContent
+      // styling (used by About mission) is unchanged.
       {
         _type: 'textContent',
         _key: 'services-ancillary',
         heading: 'Dental and Vision Plans',
+        centered: true,
         body: [
           ptBlock(
             'Complete your coverage with dental and vision plans designed to help protect you and your family. We offer individual and family options to fit your needs and budget.',
