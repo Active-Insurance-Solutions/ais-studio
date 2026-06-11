@@ -391,49 +391,23 @@ const documents: Array<Record<string, unknown>> = [
           },
         ],
       },
-      // New section requested 2026-06-11: "Ancillary & Supplemental Coverage".
-      // Items are the same 5 plans that appear under /plans#supplemental-plans
-      // — copied here rather than cross-page referenced so editors can tune
-      // the Services-page wording independently from the Plans-page wording
-      // if they ever diverge. FeatureGrid renders the centered heading + the
-      // standard icon-card grid (collapses to one column on mobile via its
-      // built-in grid-cols-1 / md:grid-cols-2 logic for 4-item grids; 5 items
-      // fall back to md:grid-cols-3 — close enough to the requested 2-column
-      // until/unless we want to special-case 5-item grids).
+      // Per client direction 2026-06-11: a single Dental & Vision section
+      // below the 4-category grid, not the 5-item Ancillary supplemental
+      // grid we shipped earlier in the day. Using textContent (heading +
+      // PortableText body) since the content is prose-shaped, not an
+      // icon-card list — TextContent renders the heading centered in a
+      // max-w-3xl container with two paragraphs below.
       {
-        _type: 'featureGrid',
+        _type: 'textContent',
         _key: 'services-ancillary',
-        heading: 'Ancillary & Supplemental Coverage',
-        // Forces 2-column rendering even though there are 5 items, per the
-        // client's request. FeatureGrid centers the odd last item in its
-        // own row via the .feature-grid--cols-2 CSS rule.
-        cols: 2,
-        items: [
-          {
-            _key: 'svc-anc-dental',
-            title: 'Dental Plans',
-            description: 'Make sure you keep smiling! Affordable dental plans are available, and some policies provide coverage for orthodontics, teeth whitening, and dental implants. We also offer dental discount plans that sometimes are more suitable than insurance.',
-          },
-          {
-            _key: 'svc-anc-vision',
-            title: 'Vision Plans',
-            description: "See what you've been missing! We can review options from multiple insurance companies to help meet your needs.",
-          },
-          {
-            _key: 'svc-anc-accident',
-            title: 'Accident Plans',
-            description: "You don't plan accidents. But you can plan for them. A supplemental accident plan typically pays a lump-sum cash benefit directly to you for injuries to help cover expenses you may have during your recovery.",
-          },
-          {
-            _key: 'svc-anc-disability',
-            title: 'Short-Term & Long-Term Disability Plans',
-            description: "An injury or illness that prevents you from working has the potential to turn into a financial hardship. Disability insurance plans generally pay a monthly cash benefit to you when you're unable to work.",
-          },
-          {
-            _key: 'svc-anc-ltc',
-            title: 'Long-Term Care Plans',
-            description: "Costs for assisted living facilities, nursing homes, and even at-home care are rising. Protect your finances and peace of mind with a long-term care policy that can protect you and your family's future.",
-          },
+        heading: 'Dental and Vision Plans',
+        body: [
+          ptBlock(
+            'Complete your coverage with dental and vision plans designed to help protect you and your family. We offer individual and family options to fit your needs and budget.',
+          ),
+          ptBlock(
+            'For employers, we can help build a well-rounded employee benefits package with options including dental, vision, group life insurance, short-term disability, long-term disability, and additional benefit solutions tailored to your team.',
+          ),
         ],
       },
     ],
