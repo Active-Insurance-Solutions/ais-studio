@@ -368,6 +368,13 @@ const documents: Array<Record<string, unknown>> = [
         _type: 'featureGrid',
         _key: 'services-grid',
         heading: '',
+        // Forces 2-column rendering. Default heuristic in FeatureGrid is
+        // 4-items → 2-col / else → 3-col, so without this the new 5th
+        // Dental and Vision card would push the grid to 3-col and leave
+        // an awkward orphan in row 2. With cols: 2, the 5th card lands
+        // alone in row 3 and the .feature-grid--cols-2 CSS rule centers
+        // it across both columns at the same card size.
+        cols: 2,
         items: [
           {
             _key: 'svc-supplemental',
@@ -389,26 +396,18 @@ const documents: Array<Record<string, unknown>> = [
             title: 'Life Insurance',
             description: 'Protection for your family and allows the family to help maintain its standard of living by providing income after the loss of a loved one.',
           },
-        ],
-      },
-      // Per client direction 2026-06-11: a single Dental & Vision section
-      // below the 4-category grid, styled as a visual sibling of the four
-      // service-category icon cards above (centered, smaller bold heading,
-      // muted secondary body). The `centered: true` flag opts TextContent
-      // into its card variant — see TextContent.vue. Default TextContent
-      // styling (used by About mission) is unchanged.
-      {
-        _type: 'textContent',
-        _key: 'services-ancillary',
-        heading: 'Dental and Vision Plans',
-        centered: true,
-        body: [
-          ptBlock(
-            'Complete your coverage with dental and vision plans designed to help protect you and your family. We offer individual and family options to fit your needs and budget.',
-          ),
-          ptBlock(
-            'For employers, we can help build a well-rounded employee benefits package with options including dental, vision, group life insurance, short-term disability, long-term disability, and additional benefit solutions tailored to your team.',
-          ),
+          // Per client direction 2026-06-11: Dental and Vision Plans as a
+          // 5th icon card in the same grid as the other categories. The
+          // description is two paragraphs (individual/family framing +
+          // employer framing) separated by a blank line; FeatureGrid's
+          // paragraphsOf() helper splits the description into separate <p>
+          // elements so both paragraphs render cleanly. Icon: Smile (Lucide)
+          // mapped in FeatureGrid.vue's ICON_MAP.
+          {
+            _key: 'svc-dental-vision',
+            title: 'Dental and Vision Plans',
+            description: 'Complete your coverage with dental and vision plans designed to help protect you and your family. We offer individual and family options to fit your needs and budget.\n\nFor employers, we can help build a well-rounded employee benefits package with options including dental, vision, group life insurance, short-term disability, long-term disability, and additional benefit solutions tailored to your team.',
+          },
         ],
       },
     ],
