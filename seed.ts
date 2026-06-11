@@ -394,7 +394,7 @@ const documents: Array<Record<string, unknown>> = [
           {
             _key: 'svc-life',
             title: 'Life Insurance',
-            description: 'Protection for your family and allows the family to help maintain its standard of living by providing income after the loss of a loved one.',
+            description: "Protect your family's future with coverage designed to provide financial security when they need it most. Life insurance can help replace income and cover important expenses giving your loved ones peace of mind during life's most difficult moments.",
           },
           // Per client direction 2026-06-11: Dental and Vision Plans as a
           // 5th icon card in the same grid as the other categories. The
