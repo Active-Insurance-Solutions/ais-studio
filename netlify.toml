@@ -1,0 +1,23 @@
+# Netlify build config for the self-hosted Sanity Studio at
+# https://studio.activeinsurancegj.com. The Sanity-hosted twin at
+# https://activeins.sanity.studio is deployed separately via
+# `pnpm exec sanity deploy` and isn't affected by this file.
+#
+# Environment variables (SANITY_STUDIO_PROJECT_ID, SANITY_STUDIO_DATASET,
+# SANITY_STUDIO_DEPLOY_FUNCTION_URL, SANITY_STUDIO_DEPLOY_HOOK_SECRET) must
+# be set in Netlify's Site settings → Environment variables — Netlify
+# doesn't read .env files at build time, and SANITY_STUDIO_DEPLOY_HOOK_SECRET
+# is a real secret that shouldn't live in this file.
+
+[build]
+  command = "pnpm install && pnpm build"
+  publish = "dist"
+
+# Sanity Studio is a single-page app; any in-app route (e.g. /staging/desk/...)
+# needs to fall through to index.html so the client-side router can resolve it.
+# Without this, refreshing or sharing a deep link 404s. Status 200 not 301 so
+# the URL stays as the user typed it.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
